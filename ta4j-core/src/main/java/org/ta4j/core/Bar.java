@@ -90,6 +90,10 @@ public interface Bar extends Serializable {
      * @return the number of trades of the bar period
      */
     long getTrades();
+    
+    void addVolume(Num tradeVolume);
+
+    void setVolume(Num tradeVolume);
 
     /**
      * @param timestamp a timestamp

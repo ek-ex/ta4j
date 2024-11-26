@@ -80,8 +80,8 @@ public class BaseBar implements Bar {
      * @param amount     the total traded amount of the bar period
      * @param trades     the number of trades of the bar period
      */
-    BaseBar(Duration timePeriod, Instant endTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice,
-            Num volume, Num amount, long trades) {
+    public BaseBar(Duration timePeriod, Instant endTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume, Num amount,
+            long trades) {
         checkTimeArguments(timePeriod, endTime);
         this.timePeriod = timePeriod;
         this.endTime = endTime;
@@ -176,14 +176,23 @@ public class BaseBar implements Bar {
         }
     }
 
+    @Override
+    public void addVolume(Num tradeVolume) {
+        this.volume = this.volume.plus(tradeVolume);
+    }
+
+    @Override
+    public void setVolume(Num tradeVolume) {
+        this.volume = tradeVolume;
+    }
+
     /**
      * @return {end time, close price, open price, low price, high price, volume}
      */
     @Override
     public String toString() {
-        return String.format(
-                "{end time: %1s, close price: %2s, open price: %3s, low price: %4s high price: %5s, volume: %6s}",
-                endTime, closePrice, openPrice, lowPrice, highPrice, volume);
+        return String.format("{end time: %1s, close price: %2s, open price: %3s, low price: %4s high price: %5s, volume: %6s}", endTime, closePrice,
+                openPrice, lowPrice, highPrice, volume);
     }
 
     /**
@@ -198,8 +207,7 @@ public class BaseBar implements Bar {
 
     @Override
     public int hashCode() {
-        return Objects.hash(beginTime, endTime, timePeriod, openPrice, highPrice, lowPrice, closePrice, volume, amount,
-                trades);
+        return Objects.hash(beginTime, endTime, timePeriod, openPrice, highPrice, lowPrice, closePrice, volume, amount, trades);
     }
 
     @Override
@@ -209,10 +217,9 @@ public class BaseBar implements Bar {
         if (!(obj instanceof BaseBar))
             return false;
         final BaseBar other = (BaseBar) obj;
-        return Objects.equals(beginTime, other.beginTime) && Objects.equals(endTime, other.endTime)
-                && Objects.equals(timePeriod, other.timePeriod) && Objects.equals(openPrice, other.openPrice)
-                && Objects.equals(highPrice, other.highPrice) && Objects.equals(lowPrice, other.lowPrice)
-                && Objects.equals(closePrice, other.closePrice) && Objects.equals(volume, other.volume)
+        return Objects.equals(beginTime, other.beginTime) && Objects.equals(endTime, other.endTime) && Objects.equals(timePeriod, other.timePeriod)
+                && Objects.equals(openPrice, other.openPrice) && Objects.equals(highPrice, other.highPrice)
+                && Objects.equals(lowPrice, other.lowPrice) && Objects.equals(closePrice, other.closePrice) && Objects.equals(volume, other.volume)
                 && Objects.equals(amount, other.amount) && trades == other.trades;
     }
 }
