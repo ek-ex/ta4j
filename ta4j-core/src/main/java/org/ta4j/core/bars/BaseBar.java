@@ -67,25 +67,12 @@ public class BaseBar implements Bar {
     /** The number of trades of the bar period. */
     private long trades;
 
-    /**
-     * Constructor.
-     *
-     * @param timePeriod the time period
-     * @param endTime    the end time of the bar period (in UTC)
-     * @param openPrice  the open price of the bar period
-     * @param highPrice  the highest price of the bar period
-     * @param lowPrice   the lowest price of the bar period
-     * @param closePrice the close price of the bar period
-     * @param volume     the total traded volume of the bar period
-     * @param amount     the total traded amount of the bar period
-     * @param trades     the number of trades of the bar period
-     */
-    public BaseBar(Duration timePeriod, Instant endTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume, Num amount,
+    public BaseBar(Duration timePeriod, Instant beginTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume, Num amount,
             long trades) {
-        checkTimeArguments(timePeriod, endTime);
+        checkTimeArguments(timePeriod, beginTime);
         this.timePeriod = timePeriod;
-        this.endTime = endTime;
-        this.beginTime = endTime.minus(timePeriod);
+        this.beginTime = beginTime;
+        this.endTime = beginTime.plus(timePeriod);
         this.openPrice = openPrice;
         this.highPrice = highPrice;
         this.lowPrice = lowPrice;
@@ -95,19 +82,11 @@ public class BaseBar implements Bar {
         this.trades = trades;
     }
 
-    /**
-     * @return the time period of the bar (must be the same for all bars within the
-     *         same {@code BarSeries})
-     */
     @Override
     public Duration getTimePeriod() {
         return timePeriod;
     }
 
-    /**
-     * @return the begin timestamp of the bar period (derived by {@link #endTime} -
-     *         {@link #timePeriod})
-     */
     @Override
     public Instant getBeginTime() {
         return beginTime;
@@ -186,6 +165,25 @@ public class BaseBar implements Bar {
         this.volume = tradeVolume;
     }
 
+    @Override
+    public void setHigh(Num price) {
+        if (highPrice == null || highPrice.isLessThan(price)) {
+            highPrice = price;
+        }
+    }
+
+    @Override
+    public void setLow(Num price) {
+        if (lowPrice == null || lowPrice.isGreaterThan(price)) {
+            lowPrice = price;
+        }
+    }
+
+    @Override
+    public void setClose(Num price) {
+        closePrice = price;
+    }
+
     /**
      * @return {end time, close price, open price, low price, high price, volume}
      */
@@ -202,7 +200,7 @@ public class BaseBar implements Bar {
      */
     private static void checkTimeArguments(Duration timePeriod, Instant endTime) {
         Objects.requireNonNull(timePeriod, "Time period cannot be null");
-        Objects.requireNonNull(endTime, "End time cannot be null");
+        Objects.requireNonNull(endTime, "Begin time cannot be null");
     }
 
     @Override

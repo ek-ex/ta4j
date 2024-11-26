@@ -90,7 +90,7 @@ public interface Bar extends Serializable {
      * @return the number of trades of the bar period
      */
     long getTrades();
-    
+
     void addVolume(Num tradeVolume);
 
     void setVolume(Num tradeVolume);
@@ -221,4 +221,10 @@ public interface Bar extends Serializable {
      * @param price the actual price per asset
      */
     void addPrice(Num price);
+
+    void setHigh(Num price);
+
+    void setLow(Num price);
+
+    void setClose(Num price);
 }
