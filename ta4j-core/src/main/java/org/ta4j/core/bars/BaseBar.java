@@ -67,12 +67,12 @@ public class BaseBar implements Bar {
     /** The number of trades of the bar period. */
     private long trades;
 
-    public BaseBar(Duration timePeriod, Instant beginTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume, Num amount,
+    public BaseBar(Duration timePeriod, Instant endTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume, Num amount,
             long trades) {
-        checkTimeArguments(timePeriod, beginTime);
+        checkTimeArguments(timePeriod, endTime);
         this.timePeriod = timePeriod;
-        this.beginTime = beginTime;
-        this.endTime = beginTime.plus(timePeriod);
+        this.endTime = endTime;
+        this.beginTime = endTime.minus(timePeriod);
         this.openPrice = openPrice;
         this.highPrice = highPrice;
         this.lowPrice = lowPrice;
@@ -80,6 +80,17 @@ public class BaseBar implements Bar {
         this.volume = volume;
         this.amount = amount;
         this.trades = trades;
+    }
+
+    public BaseBar(Duration timePeriod, Instant beginTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume) {
+        this.timePeriod = timePeriod;
+        this.endTime = beginTime.plus(timePeriod);
+        this.beginTime = beginTime;
+        this.openPrice = openPrice;
+        this.highPrice = highPrice;
+        this.lowPrice = lowPrice;
+        this.closePrice = closePrice;
+        this.volume = volume;
     }
 
     @Override
@@ -200,7 +211,7 @@ public class BaseBar implements Bar {
      */
     private static void checkTimeArguments(Duration timePeriod, Instant endTime) {
         Objects.requireNonNull(timePeriod, "Time period cannot be null");
-        Objects.requireNonNull(endTime, "Begin time cannot be null");
+        Objects.requireNonNull(endTime, "End time cannot be null");
     }
 
     @Override
