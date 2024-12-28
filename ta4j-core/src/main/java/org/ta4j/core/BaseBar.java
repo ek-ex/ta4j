@@ -99,6 +99,17 @@ public class BaseBar implements Bar {
         this.trades = trades;
     }
 
+    public BaseBar(Duration timePeriod, Instant beginTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume) {
+        this.timePeriod = timePeriod;
+        this.endTime = beginTime.plus(timePeriod);
+        this.beginTime = beginTime;
+        this.openPrice = openPrice;
+        this.highPrice = highPrice;
+        this.lowPrice = lowPrice;
+        this.closePrice = closePrice;
+        this.volume = volume;
+    }
+
     @Override
     public Duration getTimePeriod() {
         return timePeriod;
@@ -201,4 +212,24 @@ public class BaseBar implements Bar {
                 && Objects.equals(closePrice, other.closePrice) && Objects.equals(volume, other.volume)
                 && Objects.equals(amount, other.amount) && trades == other.trades;
     }
+
+	@Override
+	public void setHigh(Num high) {
+		this.highPrice = high;
+	}
+
+	@Override
+	public void setLow(Num low) {
+		this.lowPrice = low;
+	}
+
+	@Override
+	public void setClose(Num close) {
+		this.closePrice = close;
+	}
+
+	@Override
+	public void addVolume(Num volume) {
+		this.volume.plus(volume);
+	}
 }
