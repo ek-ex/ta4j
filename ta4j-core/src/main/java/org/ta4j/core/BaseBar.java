@@ -189,8 +189,8 @@ public class BaseBar implements Bar {
     @Override
     public String toString() {
         return String.format(
-                "{end time: %1s, close price: %2s, open price: %3s, low price: %4s high price: %5s, volume: %6s}",
-                endTime, closePrice, openPrice, lowPrice, highPrice, volume);
+                "{time: %1s, open: %2s, high: %3s, low: %4s close: %5s, volume: %6s}",
+                beginTime, openPrice, highPrice, lowPrice, closePrice, volume);
     }
 
     @Override
