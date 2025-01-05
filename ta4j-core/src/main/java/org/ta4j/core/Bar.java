@@ -91,9 +91,9 @@ public interface Bar extends Serializable {
 	 */
 	long getTrades();
 
-	void setHigh(Num high);
+	void updateHigh(Num high);
 
-	void setLow(Num low);
+	void updateLow(Num low);
 
 	void setClose(Num close);
 
