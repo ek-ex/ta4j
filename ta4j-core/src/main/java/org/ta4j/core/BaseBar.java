@@ -234,6 +234,6 @@ public class BaseBar implements Bar {
 
 	@Override
 	public void addVolume(Num volume) {
-		this.volume.plus(volume);
+		this.volume = this.volume.plus(volume);
 	}
 }
