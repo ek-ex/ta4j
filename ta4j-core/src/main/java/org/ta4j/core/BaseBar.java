@@ -85,8 +85,9 @@ public class BaseBar implements Bar {
 	 * @throws NullPointerException if {@link #endTime} or {@link #timePeriod} is
 	 *                              {@code null}
 	 */
-	public BaseBar(Duration timePeriod, Instant endTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice,
-			Num volume, Num amount, long trades) {
+	public BaseBar(Duration timePeriod, Instant endTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume, Num amount,
+	        long trades)
+	{
 		this.timePeriod = Objects.requireNonNull(timePeriod, "Time period cannot be null");
 		this.endTime = Objects.requireNonNull(endTime, "End time cannot be null");
 		this.beginTime = endTime.minus(timePeriod);
@@ -99,8 +100,7 @@ public class BaseBar implements Bar {
 		this.trades = trades;
 	}
 
-	public BaseBar(Duration timePeriod, Instant beginTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice,
-			Num volume) {
+	public BaseBar(Duration timePeriod, Instant beginTime, Num openPrice, Num highPrice, Num lowPrice, Num closePrice, Num volume) {
 		this.timePeriod = timePeriod;
 		this.endTime = beginTime.plus(timePeriod);
 		this.beginTime = beginTime;
@@ -189,14 +189,19 @@ public class BaseBar implements Bar {
 	 */
 	@Override
 	public String toString() {
-		return String.format("{time: %1s, open: %2s, high: %3s, low: %4s close: %5s, volume: %6s}", beginTime,
-				openPrice, highPrice, lowPrice, closePrice, volume);
+		return String.format(
+		        "{time: %1s, open: %2s, high: %3s, low: %4s close: %5s, volume: %6s}",
+		        beginTime,
+		        openPrice,
+		        highPrice,
+		        lowPrice,
+		        closePrice,
+		        volume);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(beginTime, endTime, timePeriod, openPrice, highPrice, lowPrice, closePrice, volume, amount,
-				trades);
+		return Objects.hash(beginTime, endTime, timePeriod, openPrice, highPrice, lowPrice, closePrice, volume, amount, trades);
 	}
 
 	@Override
@@ -206,11 +211,10 @@ public class BaseBar implements Bar {
 		if (!(obj instanceof BaseBar))
 			return false;
 		final BaseBar other = (BaseBar) obj;
-		return Objects.equals(beginTime, other.beginTime) && Objects.equals(endTime, other.endTime)
-				&& Objects.equals(timePeriod, other.timePeriod) && Objects.equals(openPrice, other.openPrice)
-				&& Objects.equals(highPrice, other.highPrice) && Objects.equals(lowPrice, other.lowPrice)
-				&& Objects.equals(closePrice, other.closePrice) && Objects.equals(volume, other.volume)
-				&& Objects.equals(amount, other.amount) && trades == other.trades;
+		return Objects.equals(beginTime, other.beginTime) && Objects.equals(endTime, other.endTime) && Objects.equals(timePeriod, other.timePeriod)
+		        && Objects.equals(openPrice, other.openPrice) && Objects.equals(highPrice, other.highPrice)
+		        && Objects.equals(lowPrice, other.lowPrice) && Objects.equals(closePrice, other.closePrice) && Objects.equals(volume, other.volume)
+		        && Objects.equals(amount, other.amount) && trades == other.trades;
 	}
 
 	@Override
@@ -234,6 +238,18 @@ public class BaseBar implements Bar {
 
 	@Override
 	public void addVolume(Num volume) {
+		this.volume = this.volume.plus(volume);
+	}
+
+	@Override
+	public void updateBar(Num high, Num low, Num close, Num volume) {
+		if (highPrice == null || highPrice.isLessThan(high)) {
+			highPrice = high;
+		}
+		if (lowPrice == null || lowPrice.isGreaterThan(low)) {
+			lowPrice = low;
+		}
+		this.closePrice = close;
 		this.volume = this.volume.plus(volume);
 	}
 }

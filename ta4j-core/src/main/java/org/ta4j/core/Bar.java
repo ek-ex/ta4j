@@ -99,6 +99,8 @@ public interface Bar extends Serializable {
 
 	void addVolume(Num volume);
 
+	void updateBar(Num high, Num low, Num close, Num volume);
+
 	/**
 	 * @param timestamp a timestamp
 	 * @return true if the provided timestamp is between the begin time and the end
